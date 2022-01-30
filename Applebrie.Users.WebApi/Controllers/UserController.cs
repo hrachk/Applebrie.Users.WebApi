@@ -42,6 +42,7 @@ namespace Applebrie.Users.WebApi.Controllers
        {
             try
             {
+                userInputModel.Id = Guid.NewGuid();
                 await userCommand.Execute(userInputModel);
             }
             catch (Exception exeption)
@@ -58,12 +59,14 @@ namespace Applebrie.Users.WebApi.Controllers
         [HttpPut("updateUser")]
         public async Task<ActionResult> UpdateUser(UserInputModel  userInputModel)
         {
-          
+            var dbUser = await context.Users.FindAsync(userInputModel.Id);
+            if (dbUser == null)
+                return NotFound();
 
             try
             {
-               
-                await updateUserCommand.Execute(userInputModel);
+                dbUser.Id = userInputModel.Id;
+              await updateUserCommand.Execute(userInputModel);
             }
             catch (Exception exeption)
             {

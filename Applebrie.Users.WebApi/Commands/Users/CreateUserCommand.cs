@@ -17,6 +17,7 @@ namespace Applebrie.Users.WebApi.Query.Users
         public async Task Execute(UserInputModel userInputModel)
           {
             User user = new User { 
+                Id = userInputModel.Id,
             LastName = userInputModel.LastName,
             FirstName = userInputModel.FirstName,
             BirthDate = userInputModel.BirthDate
