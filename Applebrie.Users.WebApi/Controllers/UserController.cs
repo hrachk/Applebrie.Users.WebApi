@@ -1,9 +1,7 @@
-﻿using Applebrie.Users.WebApi.Commands.Users;
+﻿using Applebrie.Users.WebApi.Commands;
+using Applebrie.Users.WebApi.Commands.Users;
 using Applebrie.Users.WebApi.Entity;
-using Applebrie.Users.WebApi.Entity.Models;
 using Applebrie.Users.WebApi.Query.Model;
-using Applebrie.Users.WebApi.Query.Users;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,18 +13,18 @@ namespace Applebrie.Users.WebApi.Controllers
     {
         private readonly AppDbContext context;
         private readonly IUserCommand userCommand;
-        private readonly UpdateUserCommand updateUserCommand;
+        private readonly UpdateUserCommand updateUserCommand; 
 
         #region Fields
 
         #endregion
 
         #region Constructor
-        public UserController(AppDbContext context, IUserCommand userCommand, UpdateUserCommand updateUserCommand )
+        public UserController(AppDbContext context, IUserCommand userCommand, UpdateUserCommand updateUserCommand)
         {
             this.context = context;
             this.userCommand = userCommand;
-            this.updateUserCommand = updateUserCommand;
+            this.updateUserCommand = updateUserCommand; 
         }
 
         #endregion
@@ -37,9 +35,9 @@ namespace Applebrie.Users.WebApi.Controllers
             return Ok(await context.Users.ToListAsync());
         }
 
-       [HttpPost("createUser")]
-       public async Task<ActionResult> CreateUser(UserInputModel userInputModel)
-       {
+        [HttpPost("createUser")]
+        public async Task<ActionResult> CreateUser(UserInputModel userInputModel)
+        {
             try
             {
                 userInputModel.Id = Guid.NewGuid();
@@ -48,30 +46,33 @@ namespace Applebrie.Users.WebApi.Controllers
             catch (Exception exeption)
             {
 
-                throw  new Exception(exeption.Message);
+                throw new Exception(exeption.Message);
             }
 
             return Ok(await context.Users.ToListAsync());
-       }
+        }
 
 
 
         [HttpPut("updateUser")]
-        public async Task<ActionResult> UpdateUser(UserInputModel  userInputModel)
+        public async Task<ActionResult> UpdateUser(UserInputModel userInputModel)
         {
-           
+
             try
-            { 
-              await updateUserCommand.Execute(userInputModel);
+            {
+                await updateUserCommand.Execute(userInputModel);
             }
             catch (Exception exeption)
             {
                 throw new Exception(exeption.Message);
             }
-            
-         
+
+
             return Ok(await context.Users.ToListAsync());
         }
+
+
+      
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(Guid id)
@@ -80,12 +81,12 @@ namespace Applebrie.Users.WebApi.Controllers
             if (dbUser == null)
                 return NotFound("User not found");
 
-             context.Users.Remove(dbUser);
+            context.Users.Remove(dbUser);
             await context.SaveChangesAsync();
 
-            return Ok(await context.Users.ToListAsync());    
-
+            return Ok(await context.Users.ToListAsync());
         }
 
+       
     }
 }
