@@ -1,7 +1,12 @@
 using Applebrie.Domain;
 using Applebrie.Users.WebApi.Commands.Users;
+using Applebrie.Users.WebApi.Queries;
 using Applebrie.Users.WebApi.Query.Users;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,13 +26,52 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUserCommand, CreateUserCommand>();
 builder.Services.AddScoped<UpdateUserCommand, UpdateUserCommand>();
+builder.Services.AddSingleton<GetUserByIdQuery, GetUserByIdQuery>();
 
+//Autofac
+#region Autofac
+
+var containerBuilder = new ContainerBuilder();
+
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+{
+    containerBuilder
+    .RegisterAssemblyTypes(Assembly.GetAssembly(typeof(GetUserByIdQuery)))
+    .AsImplementedInterfaces()
+    .InstancePerLifetimeScope();
+
+    // репозитории
+    containerBuilder
+    .RegisterGeneric(typeof(Repository<>))
+    .As(typeof(IRepository<>))
+    .InstancePerDependency();
+
+
+    //Automapper
+    MapperConfiguration mapperConfiguration =
+        new MapperConfiguration(cfg =>
+        {
+            cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
+            cfg.AddMaps(
+                typeof(GetUserByIdQuery).Assembly 
+                );
+        });
+    containerBuilder.Register(context => mapperConfiguration);
+
+});
+
+containerBuilder.Populate(builder.Services);
+
+#endregion Autofac
 
 var app = builder.Build();
 
 
 
 // Configure the HTTP request pipeline.
+app.UseCors();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -52,7 +96,7 @@ using (var scope = app.Services.CreateScope())
 #endregion
 
 app.UseHttpsRedirection();
-app.UseCors();
+
 app.UseAuthorization();
 
 app.MapControllers();

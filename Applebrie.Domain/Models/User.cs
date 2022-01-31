@@ -2,15 +2,9 @@
 
 namespace Applebrie.Domain
 {
-    public class User
+    public class User : EntityBase
     {
-        /// <summary>
-        /// НСИ Id
-        /// </summary>
-        [Display(Name = "Id")]
-        [Required]
-        public Guid Id { get; set; }
-
+       
         /// <summary>
         /// FirstName
         /// </summary>
