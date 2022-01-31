@@ -14,16 +14,17 @@ namespace Applebrie.Users.WebApi.Commands.Users
         }
         public async Task Execute(UserInputModel userInputModel)
         {
-            var users = new User
-            { 
-                
-                FirstName = userInputModel.FirstName, 
-                LastName = userInputModel.LastName, 
-                BirthDate = userInputModel.BirthDate 
-            };
+            var dbUser = await context.Users.FindAsync(userInputModel.Id);
+            if (dbUser == null)
+                return;
+             
 
-            context.Update(users);
-            await context.SaveChangesAsync(true);
+            dbUser.FirstName = userInputModel.FirstName;
+            dbUser.LastName = userInputModel.LastName;
+            dbUser.BirthDate = userInputModel.BirthDate;
+
+            ///context.Update(users);
+            await context.SaveChangesAsync();
         }
     }
 }

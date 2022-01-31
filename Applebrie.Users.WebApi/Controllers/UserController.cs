@@ -59,27 +59,33 @@ namespace Applebrie.Users.WebApi.Controllers
         [HttpPut("updateUser")]
         public async Task<ActionResult> UpdateUser(UserInputModel  userInputModel)
         {
-            var dbUser = await context.Users.FindAsync(userInputModel.Id);
-            if (dbUser == null)
-                return NotFound();
-
+           
             try
-            {
-                dbUser.Id = userInputModel.Id;
+            { 
               await updateUserCommand.Execute(userInputModel);
             }
             catch (Exception exeption)
             {
                 throw new Exception(exeption.Message);
             }
-           
-          
-
+            
          
             return Ok(await context.Users.ToListAsync());
         }
 
-      //  [HttpDelete]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteUser(Guid id)
+        {
+            var dbUser = await context.Users.FindAsync(id);
+            if (dbUser == null)
+                return NotFound("User not found");
+
+             context.Users.Remove(dbUser);
+            await context.SaveChangesAsync();
+
+            return Ok(await context.Users.ToListAsync());    
+
+        }
 
     }
 }
