@@ -1,6 +1,6 @@
-﻿using Applebrie.Users.WebApi.Commands;
+﻿using Applebrie.Domain;
+using Applebrie.Users.WebApi.Commands;
 using Applebrie.Users.WebApi.Commands.Users;
-using Applebrie.Users.WebApi.Entity;
 using Applebrie.Users.WebApi.Query.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

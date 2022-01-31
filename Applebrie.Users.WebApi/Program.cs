@@ -1,5 +1,5 @@
+using Applebrie.Domain;
 using Applebrie.Users.WebApi.Commands.Users;
-using Applebrie.Users.WebApi.Entity;
 using Applebrie.Users.WebApi.Query.Users;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,12 +14,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
                    b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
 
 builder.Services.AddControllers();
- 
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
- builder.Services.AddScoped<IUserCommand, CreateUserCommand>();
+builder.Services.AddScoped<IUserCommand, CreateUserCommand>();
 builder.Services.AddScoped<UpdateUserCommand, UpdateUserCommand>();
 
 

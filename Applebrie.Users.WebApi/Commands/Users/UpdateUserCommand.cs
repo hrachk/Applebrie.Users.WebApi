@@ -1,4 +1,4 @@
-﻿using Applebrie.Users.WebApi.Entity;
+﻿using Applebrie.Domain;
 using Applebrie.Users.WebApi.Query.Model;
 
 namespace Applebrie.Users.WebApi.Commands.Users

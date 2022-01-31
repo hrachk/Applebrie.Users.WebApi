@@ -1,6 +1,5 @@
-﻿using Applebrie.Users.WebApi.Commands.Users;
-using Applebrie.Users.WebApi.Entity;
-using Applebrie.Users.WebApi.Entity.Models;
+﻿using Applebrie.Domain;
+using Applebrie.Users.WebApi.Commands.Users;
 using Applebrie.Users.WebApi.Query.Model;
 
 namespace Applebrie.Users.WebApi.Query.Users

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Applebrie.Users.WebApi.Entity.Models
+namespace Applebrie.Domain
 {
     public class User
     {
