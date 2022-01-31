@@ -41,7 +41,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     .AsImplementedInterfaces()
     .InstancePerLifetimeScope();
 
-    // репозитории
+    
     containerBuilder
     .RegisterGeneric(typeof(Repository<>))
     .As(typeof(IRepository<>))
